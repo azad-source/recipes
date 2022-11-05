@@ -16,13 +16,13 @@
         <v-card-text>
           <v-list density="compact">
             <v-list-item
-              v-for="{ name, quantity, weight } of recipe.ingredients"
-              :key="name"
+              v-for="{ _id, name, quantity, quantityType } of recipe.ingredients"
+              :key="_id"
               class="text-left"
               elevation="1"
             >
               {{ capitalizeCaption(name) }} &mdash;
-              {{ !!quantity ? `${quantity} шт.` : `${weight} гр.` }}
+              {{ `${quantityTypeCaption(quantityType)} ${quantity}` }}
             </v-list-item>
           </v-list>
         </v-card-text>
@@ -32,16 +32,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { capitalize } from '@/helpers/stringHelper';
+import { QuantityEnum, QuantityEnumDescription } from '@/Enums';
+import { RecipeResponseModel } from '@/Models';
 
 export default defineComponent({
-  props: ['recipe'],
+  props: {
+    recipe: {
+      required: true,
+      type: Object as PropType<RecipeResponseModel>,
+    },
+  },
   data: () => ({
     show: false,
   }),
   methods: {
     capitalizeCaption: (val: string) => capitalize(val),
+    quantityTypeCaption: (val: QuantityEnum) => QuantityEnumDescription[val],
   },
 });
 </script>

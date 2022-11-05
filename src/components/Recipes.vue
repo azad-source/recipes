@@ -1,40 +1,25 @@
 <template>
   <v-row class="text-center">
-    <v-col
-      cols="12"
-      lg="4"
-      md="6"
-      sm="12"
-      xs="12"
-      v-for="recipe in recipes"
-      :key="recipe.name"
-    >
-      <RecipeItem :recipe="recipe" />
+    <v-col cols="12" lg="4" md="6" sm="12" xs="12" v-for="item in items" :key="item._id">
+      <RecipeItem :recipe="item" />
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import { RecipModel } from '@/Models';
-import { defineComponent } from 'vue';
-import { api } from '@/api/axios';
+import { defineComponent, PropType } from 'vue';
 import RecipeItem from '@/components/RecipeItem.vue';
+import { RecipeResponseModel } from '@/Models';
 
 export default defineComponent({
-  data: () => ({
-    recipes: [] as RecipModel[],
-  }),
-  mounted() {
-    this.$nextTick(function () {
-      api
-        .get('http://localhost:3000/api/recipe/')
-        .then((res) => {
-          this.recipes = res.data.response;
-        })
-        .catch((err) => {
-          console.log('err', err);
-        });
-    });
+  props: {
+    items: {
+      required: true,
+      type: Object as PropType<RecipeResponseModel[]>,
+    },
+  },
+  setup(props) {
+    props.items;
   },
   components: {
     RecipeItem,

@@ -1,15 +1,23 @@
-export interface IngredientSchema {
+import { QuantityEnum } from './Enums';
+
+export interface IngredientRequestModel {
   name: string;
-  weight: number;
   quantity: number;
-  teaSpoon: number;
-  tablespoon: number;
-  volume: number;
+  quantityType: QuantityEnum;
 }
 
-export interface RecipModel {
+export interface RecipeRequestModel {
   name: string;
   preparingTime: number;
   servingsNumber: number;
-  ingredients: IngredientSchema[];
+  ingredients: IngredientRequestModel[];
+}
+
+export interface IngredientResponseModel extends IngredientRequestModel {
+  _id: string;
+}
+
+export interface RecipeResponseModel extends Omit<RecipeRequestModel, 'ingredients'> {
+  _id: string;
+  ingredients: IngredientResponseModel[];
 }

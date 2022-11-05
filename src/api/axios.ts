@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-const baseURL = '/api/v1';
+const baseURL = 'http://localhost:3000/api/recipe';
 
 const api = axios.create({
   baseURL,
@@ -9,6 +9,8 @@ const api = axios.create({
     indexes: false,
   },
 });
+
+export const retrieveData = <T>(res: AxiosResponse<T>): T => res.data;
 
 export function buildSearchString(params: Record<string, any>): string {
   const pairs: string[] = [];

@@ -19,3 +19,19 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+::-webkit-scrollbar {
+  width: 4px;
+  height: 2em;
+}
+::-webkit-scrollbar-button {
+  background: #eee;
+}
+::-webkit-scrollbar-track-piece {
+  background: #ccc;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(188, 188, 188);
+}
+</style>
