@@ -1,7 +1,11 @@
 <template>
   <v-row class="text-center">
     <v-col cols="12" lg="4" md="6" sm="12" xs="12" v-for="item in items" :key="item._id">
-      <RecipeItem :recipe="item" />
+      <RecipeItem
+        :recipe="item"
+        @saveRecipe="(recipe) => $emit('saveRecipe', recipe)"
+        @removeIngredient="(recipe) => $emit('removeIngredient', recipe)"
+      />
     </v-col>
   </v-row>
 </template>
@@ -18,11 +22,9 @@ export default defineComponent({
       type: Object as PropType<RecipeResponseModel[]>,
     },
   },
-  setup(props) {
-    props.items;
-  },
   components: {
     RecipeItem,
   },
+  emits: ['saveRecipe', 'removeIngredient'],
 });
 </script>

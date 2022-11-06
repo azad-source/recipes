@@ -5,7 +5,7 @@
     </v-card-title>
     <v-card-subtitle>Время: {{ recipe.preparingTime }} мин.</v-card-subtitle>
     <v-card-actions>
-      <v-btn color="primary">Изменить</v-btn>
+      <v-btn color="primary" @click="showEditModal = true">Изменить</v-btn>
       <v-btn icon @click="show = !show" class="ml-auto">
         <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
       </v-btn>
@@ -29,6 +29,13 @@
       </div>
     </v-expand-transition>
   </v-card>
+  <EditRecipeModal
+    v-show="showEditModal"
+    @close-modal="showEditModal = false"
+    @save-modal="saveRecipe"
+    :recipe="recipe"
+    @remove="(recipe) => $emit('removeIngredient', recipe)"
+  />
 </template>
 
 <script lang="ts">
@@ -36,8 +43,12 @@ import { defineComponent, PropType } from 'vue';
 import { capitalize } from '@/helpers/stringHelper';
 import { QuantityEnum, QuantityEnumDescription } from '@/Enums';
 import { RecipeResponseModel } from '@/Models';
+import EditRecipeModal from '@/components/EditRecipeModal.vue';
 
 export default defineComponent({
+  components: {
+    EditRecipeModal,
+  },
   props: {
     recipe: {
       required: true,
@@ -46,10 +57,16 @@ export default defineComponent({
   },
   data: () => ({
     show: false,
+    showEditModal: false,
   }),
   methods: {
     capitalizeCaption: (val: string) => capitalize(val),
     quantityTypeCaption: (val: QuantityEnum) => QuantityEnumDescription[val],
+    saveRecipe(recipe: RecipeResponseModel) {
+      this.$emit('saveRecipe', recipe);
+      this.showEditModal = false;
+    },
   },
+  emits: ['saveRecipe', 'removeIngredient'],
 });
 </script>
