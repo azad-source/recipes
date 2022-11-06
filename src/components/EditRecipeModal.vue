@@ -1,12 +1,12 @@
 <template>
-  <div
-    class="modal-overlay"
-    @click="$emit('close-modal')"
-    @keydown.esc="$emit('close-modal')"
-  >
-    <v-row @click.stop>
-      <v-col cols="12" class="d-flex justify-center align-center">
-        <div class="modal">
+  <div class="modal-overlay">
+    <v-row>
+      <v-col
+        cols="12"
+        class="d-flex justify-center align-center"
+        @click="$emit('close-modal')"
+      >
+        <div class="modal" @click.stop>
           <div class="modal-title">Изменение рецепта</div>
           <div class="px-5 py-8">
             <RecipeEditForm
