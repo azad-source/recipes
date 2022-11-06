@@ -76,8 +76,9 @@
         class="removeBtn"
         color="error"
         @click="removeIngredientById(ingredient._id)"
-        >mdi-delete-forever</v-icon
       >
+        mdi-delete-forever
+      </v-icon>
     </v-card>
 
     <v-btn @click="addIngredient" color="success" class="my-4"

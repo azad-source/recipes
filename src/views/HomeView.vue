@@ -6,33 +6,30 @@
         <v-btn color="primary" class="mt-2">Рандом</v-btn>
       </v-col>
       <v-col cols="12" md="10">
-        <Recipes :items="allRecipes" @saveRecipe="() => 1" />
+        <Recipes :items="allRecipes" @saveRecipe="() => 1" @removeRecipe="removeRecipe" />
       </v-col>
     </v-row>
   </v-container>
-  <!-- <AddRecipeModal
+  <AddRecipeModal
     v-show="showAddModal"
     @close-modal="showAddModal = false"
-    @save-modal="(recipe) => saveRecipe(recipe)"
-    @remove="removeIngredient"
-  /> -->
+    @save-modal="(recipe) => addRecipe(recipe)"
+    @remove="editRecipe"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { mapGetters, mapActions } from 'vuex';
 import Recipes from '@/components/Recipes.vue';
-import { useStore } from '@/store';
 import { ActionTypes } from '@/store/actions';
-// import AddRecipeModal from '@/components/AddRecipeModal.vue';
-// import { api, retrieveData } from '@/api/axios';
-// import { RecipeRequestModel, RecipeResponseModel } from '@/Models';
+import AddRecipeModal from '@/components/AddRecipeModal.vue';
+import { RecipeRequestModel } from '@/Models';
 
 export default defineComponent({
   name: 'HomeView',
   components: {
     Recipes,
-    // AddRecipeModal,
+    AddRecipeModal,
   },
   computed: {
     allRecipes() {
@@ -44,36 +41,24 @@ export default defineComponent({
   }),
   methods: {
     getRecipes() {
-      this.$store
-        .dispatch(ActionTypes.GET_RECIPES)
-        .then((res) => console.log('res', res));
+      this.$store.dispatch(ActionTypes.GET_RECIPES);
+    },
+    addRecipe(recipe: RecipeRequestModel) {
+      this.$store.dispatch(ActionTypes.ADD_RECIPE, recipe).then(() => {
+        this.showAddModal = false;
+      });
+    },
+    editRecipe(recipe: RecipeRequestModel) {
+      this.$store.dispatch(ActionTypes.EDIT_RECIPE, recipe);
+    },
+    removeRecipe(recipeID: string) {
+      this.$store.dispatch(ActionTypes.REMOVE_RECIPE, recipeID);
     },
   },
   mounted() {
     this.$nextTick(function () {
       this.getRecipes();
     });
-  },
-  setup() {
-    // const store = useStore();
-    // function getRecipes() {
-    //   store.dispatch(ActionTypes.GET_RECIPES);
-    // }
-    // function addRecipe() {
-    //   store.dispatch(ActionTypes.ADD_RECIPE);
-    // }
-    // function editRecipe() {
-    //   store.dispatch(ActionTypes.EDIT_RECIPE);
-    // }
-    // function removeRecipe() {
-    //   store.dispatch(ActionTypes.REMOVE_RECIPE);
-    // }
-    // return {
-    //   getRecipes,
-    //   addRecipe,
-    //   editRecipe,
-    //   removeRecipe,
-    // };
   },
 });
 </script>

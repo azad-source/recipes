@@ -54,15 +54,12 @@ export const actions: ActionTree<RootState, RootState> = {
         throw new Error(err);
       });
   },
-  [ActionTypes.REMOVE_RECIPE](
-    { commit },
-    payload: { recipeID: string },
-  ): Promise<boolean> {
+  [ActionTypes.REMOVE_RECIPE]({ commit }, recipeID): Promise<boolean> {
     return api
-      .post<boolean>(`/remove/`, { recipeID: payload.recipeID })
+      .post<boolean>(`/remove/`, { recipeID })
       .then(retrieveData)
       .then((res) => {
-        commit(RootMutations.REMOVE_RECIPE, res);
+        commit(RootMutations.REMOVE_RECIPE, recipeID);
         return res;
       })
       .catch((err) => {

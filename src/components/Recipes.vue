@@ -5,6 +5,7 @@
         :recipe="item"
         @saveRecipe="(recipe) => $emit('saveRecipe', recipe)"
         @removeIngredient="(recipe) => $emit('removeIngredient', recipe)"
+        @removeRecipe="(recipeID) => $emit('removeRecipe', recipeID)"
       />
     </v-col>
   </v-row>
@@ -25,6 +26,6 @@ export default defineComponent({
   components: {
     RecipeItem,
   },
-  emits: ['saveRecipe', 'removeIngredient'],
+  emits: ['saveRecipe', 'removeIngredient', 'removeRecipe'],
 });
 </script>

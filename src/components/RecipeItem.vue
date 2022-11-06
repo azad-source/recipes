@@ -28,6 +28,9 @@
         </v-card-text>
       </div>
     </v-expand-transition>
+    <v-icon class="removeBtn" color="error" @click="$emit('removeRecipe', recipe._id)">
+      mdi-delete-forever
+    </v-icon>
   </v-card>
   <EditRecipeModal
     v-show="showEditModal"
@@ -67,6 +70,14 @@ export default defineComponent({
       this.showEditModal = false;
     },
   },
-  emits: ['saveRecipe', 'removeIngredient'],
+  emits: ['saveRecipe', 'removeIngredient', 'removeRecipe'],
 });
 </script>
+
+<style scoped>
+.removeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+</style>
