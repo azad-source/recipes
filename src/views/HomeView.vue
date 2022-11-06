@@ -6,7 +6,12 @@
         <v-btn color="primary" class="mt-2">Рандом</v-btn>
       </v-col>
       <v-col cols="12" md="10">
-        <Recipes :items="allRecipes" @saveRecipe="() => 1" @removeRecipe="removeRecipe" />
+        <Recipes
+          :items="allRecipes"
+          @saveRecipe="editRecipe"
+          @removeRecipe="removeRecipe"
+          @removeIngr="removeIngr"
+        />
       </v-col>
     </v-row>
   </v-container>
@@ -49,10 +54,15 @@ export default defineComponent({
       });
     },
     editRecipe(recipe: RecipeRequestModel) {
-      this.$store.dispatch(ActionTypes.EDIT_RECIPE, recipe);
+      this.$store.dispatch(ActionTypes.EDIT_RECIPE, recipe).then(() => {
+        this.showAddModal = false;
+      });
     },
     removeRecipe(recipeID: string) {
       this.$store.dispatch(ActionTypes.REMOVE_RECIPE, recipeID);
+    },
+    removeIngr(recipe: RecipeRequestModel) {
+      this.$store.dispatch(ActionTypes.EDIT_RECIPE, recipe);
     },
   },
   mounted() {

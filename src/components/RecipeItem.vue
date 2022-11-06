@@ -37,7 +37,7 @@
     @close-modal="showEditModal = false"
     @save-modal="saveRecipe"
     :recipe="recipe"
-    @remove="(recipe) => $emit('removeIngredient', recipe)"
+    @removeIngr="(recipe) => $emit('removeIngr', recipe)"
   />
 </template>
 
@@ -70,7 +70,7 @@ export default defineComponent({
       this.showEditModal = false;
     },
   },
-  emits: ['saveRecipe', 'removeIngredient', 'removeRecipe'],
+  emits: ['saveRecipe', 'removeRecipe', 'removeIngr'],
 });
 </script>
 

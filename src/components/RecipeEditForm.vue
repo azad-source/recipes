@@ -99,7 +99,7 @@
 
 <script lang="ts">
 import { QuantityEnum, QuantityEnumDescription } from '@/Enums';
-import { RecipeRequestModel, RecipeResponseModel } from '@/Models';
+import { RecipeResponseModel } from '@/Models';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
@@ -150,7 +150,7 @@ export default defineComponent({
       const newIngredients = this.recipe.ingredients.filter((item) => item._id !== id);
       if (!this.isAdding) {
         newRecipe.ingredients = newIngredients;
-        this.$emit('save', newRecipe);
+        this.$emit('removeIngr', newRecipe);
       }
       this.recipe.ingredients = newIngredients;
     },

@@ -41,10 +41,13 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   [ActionTypes.EDIT_RECIPE](
     { commit },
-    payload: { recipe: RecipeRequestModel },
+    recipe: Partial<RecipeResponseModel>,
   ): Promise<RecipeResponseModel> {
+    const newRecipe = { ...recipe };
+    delete newRecipe._id;
+
     return api
-      .post<RecipeResponseModel>(`/update/`, payload.recipe)
+      .post<RecipeResponseModel>(`/update/`, { ...newRecipe, recipeID: recipe._id })
       .then(retrieveData)
       .then((res) => {
         commit(RootMutations.UPDATE_RECIPE, res);
@@ -54,7 +57,7 @@ export const actions: ActionTree<RootState, RootState> = {
         throw new Error(err);
       });
   },
-  [ActionTypes.REMOVE_RECIPE]({ commit }, recipeID): Promise<boolean> {
+  [ActionTypes.REMOVE_RECIPE]({ commit }, recipeID: string): Promise<boolean> {
     return api
       .post<boolean>(`/remove/`, { recipeID })
       .then(retrieveData)

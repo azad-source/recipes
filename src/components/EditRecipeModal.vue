@@ -13,6 +13,7 @@
               :existingRecipe="recipe"
               @save="saveRecipe"
               @close="$emit('close-modal')"
+              @removeIngr="(recipe) => $emit('removeIngr', recipe)"
             />
           </div>
         </div>
@@ -38,7 +39,7 @@ export default defineComponent({
   },
   methods: {
     saveRecipe(item: RecipeRequestModel) {
-      this.$emit('save-modal', item, this.recipe._id);
+      this.$emit('save-modal', item);
     },
   },
 });
