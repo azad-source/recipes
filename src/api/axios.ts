@@ -8,6 +8,7 @@ const api = axios.create({
     serialize: buildSearchString,
     indexes: false,
   },
+  headers: { 'Access-Control-Allow-Origin': '*' },
 });
 
 export const retrieveData = <T>(res: AxiosResponse<T>): T => res.data;
