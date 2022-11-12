@@ -1,7 +1,7 @@
 const { defineConfig } = require('@vue/cli-service');
 module.exports = defineConfig({
   transpileDependencies: true,
-  // publicPath: '/notes/dist/',
+  publicPath: '/recipes/dist/',
 
   pluginOptions: {
     vuetify: {
