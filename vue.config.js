@@ -8,4 +8,7 @@ module.exports = defineConfig({
       // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
     },
   },
+  devServer: {
+    proxy: 'http://83.136.233.139:3000',
+  },
 });

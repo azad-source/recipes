@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-const baseURL = 'http://localhost:3000/api/recipe';
+const baseURL = 'http://83.136.233.139:3000/api/recipe';
 
 const api = axios.create({
   baseURL,
