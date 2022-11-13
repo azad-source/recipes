@@ -72,11 +72,7 @@
           color="primary"
         />
       </v-item-group>
-      <v-icon
-        class="removeBtn"
-        color="error"
-        @click="removeIngredientById(ingredient._id)"
-      >
+      <v-icon class="removeBtn" color="error" @click="removeIngredient(index)">
         mdi-delete-forever
       </v-icon>
     </v-card>
@@ -100,7 +96,9 @@
 <script lang="ts">
 import { QuantityEnum, QuantityEnumDescription } from '@/Enums';
 import { RecipeResponseModel } from '@/Models';
+import { ingredientBlank, recipeBlank } from '@/store';
 import { defineComponent, PropType } from 'vue';
+import cloneDeep from 'lodash/cloneDeep';
 
 export default defineComponent({
   props: {
@@ -114,12 +112,7 @@ export default defineComponent({
   },
   data: () => ({
     valid: true,
-    recipe: {
-      name: '',
-      preparingTime: 0,
-      servingsNumber: 0,
-      ingredients: [{ name: '', quantity: 0, quantityType: QuantityEnum.WEIGHT }],
-    } as RecipeResponseModel,
+    recipe: cloneDeep({ ...recipeBlank }),
     recipeNameRules: [
       (v: string) => !!v || 'Название необходимо указать',
       (v: string) =>
@@ -135,39 +128,35 @@ export default defineComponent({
       return QuantityEnumDescription[item as QuantityEnum];
     },
     addIngredient() {
-      this.recipe.ingredients.push({
-        _id: '',
-        name: '',
-        quantity: 0,
-        quantityType: QuantityEnum.WEIGHT,
-      });
+      this.recipe.ingredients.push(cloneDeep({ ...ingredientBlank }));
     },
     quantityTypeCaption(type: QuantityEnum) {
       return QuantityEnumDescription[type];
     },
-    removeIngredientById(id: string) {
-      const newRecipe = { ...this.recipe };
-      const newIngredients = this.recipe.ingredients.filter((item) => item._id !== id);
-      if (!this.isAdding) {
-        newRecipe.ingredients = newIngredients;
-        this.$emit('removeIngr', newRecipe);
-      }
-      this.recipe.ingredients = newIngredients;
+    removeIngredient(index: number) {
+      this.recipe.ingredients = this.recipe.ingredients.filter((el, i) => i !== index);
     },
-    // validate() {
-    //   this.$refs.form.validate();
-    // },
-    // reset() {
-    //   this.$refs.form.reset();
-    // },
-    // resetValidation() {
-    //   this.$refs.form.resetValidation();
-    // },
   },
   mounted() {
     if (this.existingRecipe) {
-      this.recipe = this.existingRecipe;
+      this.recipe = cloneDeep({ ...this.existingRecipe });
     }
+  },
+  // computed: {
+  //   recipeLocal: {
+  //     get: function () {
+  //       if (this.existingRecipe) {
+  //         return this.existingRecipe;
+  //       }
+  //       return this.recipe;
+  //     },
+  //     set: function () {
+  //       this.recipe = this.recipe;
+  //     },
+  //   },
+  // },
+  unmount() {
+    this.recipe = cloneDeep({ ...recipeBlank });
   },
 });
 </script>

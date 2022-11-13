@@ -11,7 +11,7 @@ const api = axios.create({
   headers: { 'Access-Control-Allow-Origin': '*' },
 });
 
-export const retrieveData = <T>(res: AxiosResponse<T>): T => res.data;
+export const retrieveData = (res: AxiosResponse) => res.data;
 
 export function buildSearchString(params: Record<string, any>): string {
   const pairs: string[] = [];

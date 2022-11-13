@@ -16,7 +16,7 @@
     </v-row>
   </v-container>
   <AddRecipeModal
-    v-show="showAddModal"
+    v-if="showAddModal"
     @close-modal="showAddModal = false"
     @save-modal="(recipe) => addRecipe(recipe)"
     @remove="editRecipe"
