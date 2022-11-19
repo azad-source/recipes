@@ -26,10 +26,10 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   [ActionTypes.ADD_RECIPE](
     { commit },
-    payload: { recipe: RecipeRequestModel },
+    recipe: RecipeRequestModel,
   ): Promise<RecipeResponseModel> {
     return api
-      .post<RecipeResponseModel>('/store/', payload.recipe)
+      .post<RecipeResponseModel>('/store/', recipe)
       .then(retrieveData)
       .then((res) => {
         commit(RootMutations.ADD_RECIPE, res);

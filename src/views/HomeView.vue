@@ -17,8 +17,8 @@
   </v-container>
   <AddRecipeModal
     v-if="showAddModal"
-    @close-modal="showAddModal = false"
-    @save-modal="(recipe) => addRecipe(recipe)"
+    @closeModal="showAddModal = false"
+    @saveModal="addRecipe"
     @remove="editRecipe"
   />
 </template>
@@ -49,6 +49,7 @@ export default defineComponent({
       this.$store.dispatch(ActionTypes.GET_RECIPES);
     },
     addRecipe(recipe: RecipeRequestModel) {
+      console.log('recipe', recipe);
       this.$store.dispatch(ActionTypes.ADD_RECIPE, recipe).then(() => {
         this.showAddModal = false;
       });

@@ -34,8 +34,8 @@
   </v-card>
   <EditRecipeModal
     v-show="showEditModal"
-    @close-modal="showEditModal = false"
-    @save-modal="saveRecipe"
+    @closeModal="showEditModal = false"
+    @saveModal="saveRecipe"
     :recipe="recipe"
     @removeIngr="(recipe) => $emit('removeIngr', recipe)"
   />
@@ -45,7 +45,7 @@
 import { defineComponent, PropType } from 'vue';
 import { capitalize } from '@/helpers/stringHelper';
 import { QuantityEnum, QuantityEnumDescription } from '@/Enums';
-import { RecipeResponseModel } from '@/Models';
+import { RecipeRequestModel, RecipeResponseModel } from '@/Models';
 import EditRecipeModal from '@/components/EditRecipeModal.vue';
 
 export default defineComponent({
@@ -65,12 +65,16 @@ export default defineComponent({
   methods: {
     capitalizeCaption: (val: string) => capitalize(val),
     quantityTypeCaption: (val: QuantityEnum) => QuantityEnumDescription[val],
-    saveRecipe(recipe: RecipeResponseModel) {
+    saveRecipe(recipe: RecipeRequestModel) {
       this.$emit('saveRecipe', recipe);
       this.showEditModal = false;
     },
   },
-  emits: ['saveRecipe', 'removeRecipe', 'removeIngr'],
+  emits: {
+    saveRecipe: (recipe: RecipeRequestModel) => true,
+    removeRecipe: (recipeId: string) => true,
+    removeIngr: (recipe: RecipeRequestModel) => true,
+  },
 });
 </script>
 

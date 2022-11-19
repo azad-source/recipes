@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import RecipeItem from '@/components/RecipeItem.vue';
-import { RecipeResponseModel } from '@/Models';
+import { RecipeRequestModel, RecipeResponseModel } from '@/Models';
 
 export default defineComponent({
   props: {
@@ -26,6 +26,10 @@ export default defineComponent({
   components: {
     RecipeItem,
   },
-  emits: ['saveRecipe', 'removeIngr', 'removeRecipe'],
+  emits: {
+    saveRecipe: (recipe: RecipeRequestModel) => true,
+    removeIngr: (recipe: RecipeRequestModel) => true,
+    removeRecipe: (recipeId: string) => true,
+  },
 });
 </script>

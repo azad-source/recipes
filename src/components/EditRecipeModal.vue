@@ -4,7 +4,7 @@
       <v-col
         cols="12"
         class="d-flex justify-center align-center"
-        @click="$emit('close-modal')"
+        @click="$emit('closeModal')"
       >
         <div class="modal" @click.stop>
           <div class="modal-title">Изменение рецепта</div>
@@ -12,7 +12,7 @@
             <RecipeEditForm
               :existingRecipe="recipe"
               @save="saveRecipe"
-              @close="$emit('close-modal')"
+              @close="$emit('closeModal')"
               @removeIngr="(recipe) => $emit('removeIngr', recipe)"
             />
           </div>
@@ -39,8 +39,13 @@ export default defineComponent({
   },
   methods: {
     saveRecipe(item: RecipeRequestModel) {
-      this.$emit('save-modal', item);
+      this.$emit('saveModal', item);
     },
+  },
+  emits: {
+    removeIngr: (recipe: RecipeRequestModel) => true,
+    saveModal: (recipe: RecipeRequestModel) => true,
+    closeModal: () => true,
   },
 });
 </script>

@@ -77,9 +77,7 @@
       </v-icon>
     </v-card>
 
-    <v-btn @click="addIngredient" color="success" class="my-4"
-      >Добавить еще ингредиент</v-btn
-    >
+    <v-btn @click="addIngredient" color="success" class="my-4">Добавить ингредиент</v-btn>
 
     <!-- <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">
                 Validate
@@ -87,7 +85,7 @@
               <v-btn color="error" class="mr-4" @click="reset"> Reset Form </v-btn>
               <v-btn color="warning" @click="resetValidation"> Reset Validation </v-btn> -->
     <v-item-group class="mt-5">
-      <v-btn color="primary" @click="$emit('save', recipe)">Сохранить</v-btn>
+      <v-btn color="primary" @click="() => save(recipe)">Сохранить</v-btn>
       <v-btn @click="$emit('close')" class="ml-5">Закрыть</v-btn>
     </v-item-group>
   </v-form>
@@ -95,7 +93,11 @@
 
 <script lang="ts">
 import { QuantityEnum, QuantityEnumDescription } from '@/Enums';
-import { RecipeResponseModel } from '@/Models';
+import {
+  IngredientRequestModel,
+  RecipeRequestModel,
+  RecipeResponseModel,
+} from '@/Models';
 import { ingredientBlank, recipeBlank } from '@/store';
 import { defineComponent, PropType } from 'vue';
 import cloneDeep from 'lodash/cloneDeep';
@@ -109,6 +111,12 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+  },
+  emits: {
+    close: () => true,
+    save: (recipe: RecipeRequestModel) => true,
+    removeIngr: (recipe: RecipeRequestModel) => true,
+    remove: (recipe: RecipeRequestModel) => true,
   },
   data: () => ({
     valid: true,
@@ -136,12 +144,34 @@ export default defineComponent({
     removeIngredient(index: number) {
       this.recipe.ingredients = this.recipe.ingredients.filter((el, i) => i !== index);
     },
+    save(recipe: RecipeResponseModel) {
+      const { name, preparingTime, servingsNumber, ingredients } = recipe;
+
+      const _ingredients = ingredients.map(({ name, quantity, quantityType }) => ({
+        name,
+        quantity,
+        quantityType,
+      }));
+
+      const _recipe: RecipeRequestModel = {
+        name,
+        preparingTime,
+        servingsNumber,
+        ingredients: _ingredients,
+      };
+      this.$emit('save', _recipe);
+    },
   },
-  mounted() {
+  created() {
     if (this.existingRecipe) {
       this.recipe = cloneDeep({ ...this.existingRecipe });
     }
   },
+  // mounted() {
+  //   if (this.existingRecipe) {
+  //     this.recipe = cloneDeep({ ...this.existingRecipe });
+  //   }
+  // },
   // computed: {
   //   recipeLocal: {
   //     get: function () {

@@ -4,14 +4,14 @@
       <v-col
         cols="12"
         class="d-flex justify-center align-center"
-        @click="$emit('close-modal')"
+        @click="$emit('closeModal')"
       >
         <div class="modal" @click.stop>
           <div class="modal-title">Добавление рецепта</div>
           <div class="px-5 py-8">
             <RecipeEditForm
-              @save="(recipe) => $emit('save-modal', recipe)"
-              @close="$emit('close-modal')"
+              @save="save"
+              @close="$emit('closeModal')"
               @remove="(recipe) => $emit('remove', recipe)"
               :isAdding="true"
             />
@@ -25,10 +25,21 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import RecipeEditForm from '@/components/RecipeEditForm.vue';
+import { RecipeRequestModel } from '@/Models';
 
 export default defineComponent({
   components: {
     RecipeEditForm,
+  },
+  emits: {
+    remove: (recipe: RecipeRequestModel) => recipe,
+    saveModal: (recipe: RecipeRequestModel) => recipe,
+    closeModal: () => true,
+  },
+  methods: {
+    save(recipe: RecipeRequestModel) {
+      this.$emit('saveModal', recipe);
+    },
   },
 });
 </script>
