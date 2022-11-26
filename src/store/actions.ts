@@ -41,13 +41,10 @@ export const actions: ActionTree<RootState, RootState> = {
   },
   [ActionTypes.EDIT_RECIPE](
     { commit },
-    recipe: Partial<RecipeResponseModel>,
+    recipe: RecipeRequestModel,
   ): Promise<RecipeResponseModel> {
-    const newRecipe = { ...recipe };
-    delete newRecipe._id;
-
     return api
-      .post<RecipeResponseModel>(`/update/`, { ...newRecipe, recipeID: recipe._id })
+      .post<RecipeResponseModel>(`/update/`, recipe)
       .then(retrieveData)
       .then((res) => {
         commit(RootMutations.UPDATE_RECIPE, res);

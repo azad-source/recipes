@@ -154,6 +154,7 @@ export default defineComponent({
       }));
 
       const _recipe: RecipeRequestModel = {
+        recipeID: recipe._id,
         name,
         preparingTime,
         servingsNumber,
