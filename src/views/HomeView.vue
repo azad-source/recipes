@@ -3,7 +3,9 @@
     <v-row>
       <v-col cols="12" md="2" class="d-flex flex-column">
         <v-btn color="primary" @click="showAddModal = true">Добавить</v-btn>
-        <v-btn color="primary" class="mt-2">Рандом</v-btn>
+        <v-btn color="primary" @click="showRandomRecipeModal = true" class="mt-2"
+          >Рандом</v-btn
+        >
       </v-col>
       <v-col cols="12" md="10">
         <Recipes
@@ -21,20 +23,26 @@
     @saveModal="addRecipe"
     @remove="editRecipe"
   />
+  <RandomRecipeModal
+    v-if="showRandomRecipeModal"
+    @closeModal="showRandomRecipeModal = false"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import Recipes from '@/components/Recipes.vue';
-import { ActionTypes } from '@/store/actions';
 import AddRecipeModal from '@/components/AddRecipeModal.vue';
+import RandomRecipeModal from '@/components/RandomRecipeModal.vue';
 import { RecipeRequestModel } from '@/Models';
+import { ActionTypes } from '@/store/actions';
 
 export default defineComponent({
   name: 'HomeView',
   components: {
     Recipes,
     AddRecipeModal,
+    RandomRecipeModal,
   },
   computed: {
     allRecipes() {
@@ -43,6 +51,7 @@ export default defineComponent({
   },
   data: () => ({
     showAddModal: false,
+    showRandomRecipeModal: false,
   }),
   methods: {
     getRecipes() {
@@ -55,15 +64,15 @@ export default defineComponent({
       });
     },
     editRecipe(recipe: RecipeRequestModel) {
-      this.$store.dispatch(ActionTypes.EDIT_RECIPE, recipe).then(() => {
+      this.$store.dispatch(ActionTypes.UPDATE_RECIPE_BY_ID, recipe).then(() => {
         this.showAddModal = false;
       });
     },
     removeRecipe(recipeID: string) {
-      this.$store.dispatch(ActionTypes.REMOVE_RECIPE, recipeID);
+      this.$store.dispatch(ActionTypes.REMOVE_RECIPE_BY_ID, recipeID);
     },
     removeIngr(recipe: RecipeRequestModel) {
-      this.$store.dispatch(ActionTypes.EDIT_RECIPE, recipe);
+      this.$store.dispatch(ActionTypes.UPDATE_RECIPE_BY_ID, recipe);
     },
   },
   mounted() {

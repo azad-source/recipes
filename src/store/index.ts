@@ -8,6 +8,7 @@ import { QuantityEnum } from '@/Enums';
 
 export interface RootState {
   recipes: RecipeResponseModel[];
+  recipe: RecipeResponseModel;
 }
 
 export const key: InjectionKey<Store<RootState>> = Symbol();
@@ -33,6 +34,7 @@ export const ingredientBlank: IngredientResponseModel = {
 
 const state: RootState = {
   recipes: [],
+  recipe: recipeBlank,
 };
 
 const store: StoreOptions<RootState> = {

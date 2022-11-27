@@ -2,22 +2,35 @@ import { api, retrieveData } from '@/api/axios';
 import { RecipeRequestModel, RecipeResponseModel } from '@/Models';
 import { ActionTree } from 'vuex';
 import { RootState } from '.';
-import { RootMutations } from './mutations';
 
 export enum ActionTypes {
   GET_RECIPES = 'GET_RECIPES',
+  GET_RECIPE_BY_ID = 'GET_RECIPE_BY_ID',
+  GET_RANDOM_RECIPE = 'GET_RANDOM_RECIPE',
   ADD_RECIPE = 'ADD_RECIPE',
-  EDIT_RECIPE = 'EDIT_RECIPE',
-  REMOVE_RECIPE = 'REMOVE_RECIPE',
+  UPDATE_RECIPE_BY_ID = 'UPDATE_RECIPE_BY_ID',
+  REMOVE_RECIPE_BY_ID = 'REMOVE_RECIPE_BY_ID',
 }
 
 export const actions: ActionTree<RootState, RootState> = {
   [ActionTypes.GET_RECIPES]({ commit }): Promise<RecipeResponseModel[]> {
     return api
-      .get<RecipeResponseModel[]>('/')
+      .get<RecipeResponseModel[]>('/getAll/')
       .then(retrieveData)
       .then((res) => {
-        commit(RootMutations.UPDATE_RECIPES, res);
+        commit(ActionTypes.GET_RECIPES, res);
+        return res;
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  },
+  [ActionTypes.GET_RECIPE_BY_ID]({ commit }): Promise<RecipeResponseModel> {
+    return api
+      .get<RecipeResponseModel>('/getById/')
+      .then(retrieveData)
+      .then((res) => {
+        commit(ActionTypes.GET_RECIPE_BY_ID, res);
         return res;
       })
       .catch((err) => {
@@ -29,37 +42,37 @@ export const actions: ActionTree<RootState, RootState> = {
     recipe: RecipeRequestModel,
   ): Promise<RecipeResponseModel> {
     return api
-      .post<RecipeResponseModel>('/store/', recipe)
+      .post<RecipeResponseModel>('/add/', recipe)
       .then(retrieveData)
       .then((res) => {
-        commit(RootMutations.ADD_RECIPE, res);
+        commit(ActionTypes.ADD_RECIPE, res);
         return res;
       })
       .catch((err) => {
         throw new Error(err);
       });
   },
-  [ActionTypes.EDIT_RECIPE](
+  [ActionTypes.UPDATE_RECIPE_BY_ID](
     { commit },
     recipe: RecipeRequestModel,
   ): Promise<RecipeResponseModel> {
     return api
-      .post<RecipeResponseModel>(`/update/`, recipe)
+      .post<RecipeResponseModel>(`/updateById/`, recipe)
       .then(retrieveData)
       .then((res) => {
-        commit(RootMutations.UPDATE_RECIPE, res);
+        commit(ActionTypes.UPDATE_RECIPE_BY_ID, res);
         return res;
       })
       .catch((err) => {
         throw new Error(err);
       });
   },
-  [ActionTypes.REMOVE_RECIPE]({ commit }, recipeID: string): Promise<boolean> {
+  [ActionTypes.REMOVE_RECIPE_BY_ID]({ commit }, recipeID: string): Promise<boolean> {
     return api
-      .post<boolean>(`/remove/`, { recipeID })
+      .post<boolean>(`/removeById/`, { recipeID })
       .then(retrieveData)
       .then((res) => {
-        commit(RootMutations.REMOVE_RECIPE, recipeID);
+        commit(ActionTypes.REMOVE_RECIPE_BY_ID, recipeID);
         return res;
       })
       .catch((err) => {

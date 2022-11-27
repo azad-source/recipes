@@ -1,6 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 
-const baseURL = 'https://azad-source.online/api/recipe';
+const isDev = process.env.NODE_ENV === 'development';
+
+const domain = isDev ? 'http://localhost:3000' : 'https://azad-source.online';
+
+const baseURL = `${domain}/api/recipe`;
 
 const api = axios.create({
   baseURL,
@@ -11,7 +15,9 @@ const api = axios.create({
   headers: { 'Access-Control-Allow-Origin': '*' },
 });
 
-export const retrieveData = (res: AxiosResponse) => res.data;
+export function retrieveData<T>(result: AxiosResponse<T>): T {
+  return result.data;
+}
 
 export function buildSearchString(params: Record<string, any>): string {
   const pairs: string[] = [];

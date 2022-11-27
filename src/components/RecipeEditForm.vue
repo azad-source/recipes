@@ -93,11 +93,7 @@
 
 <script lang="ts">
 import { QuantityEnum, QuantityEnumDescription } from '@/Enums';
-import {
-  IngredientRequestModel,
-  RecipeRequestModel,
-  RecipeResponseModel,
-} from '@/Models';
+import { RecipeRequestModel, RecipeResponseModel } from '@/Models';
 import { ingredientBlank, recipeBlank } from '@/store';
 import { defineComponent, PropType } from 'vue';
 import cloneDeep from 'lodash/cloneDeep';
