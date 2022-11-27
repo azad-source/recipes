@@ -37,6 +37,15 @@ export const actions: ActionTree<RootState, RootState> = {
         throw new Error(err);
       });
   },
+  [ActionTypes.GET_RANDOM_RECIPE](): Promise<RecipeResponseModel> {
+    return api
+      .get<RecipeResponseModel>('/getRandomOne/')
+      .then(retrieveData)
+      .then((res) => res)
+      .catch((err) => {
+        throw new Error(err);
+      });
+  },
   [ActionTypes.ADD_RECIPE](
     { commit },
     recipe: RecipeRequestModel,

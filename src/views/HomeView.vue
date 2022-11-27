@@ -3,9 +3,7 @@
     <v-row>
       <v-col cols="12" md="2" class="d-flex flex-column">
         <v-btn color="primary" @click="showAddModal = true">Добавить</v-btn>
-        <v-btn color="primary" @click="showRandomRecipeModal = true" class="mt-2"
-          >Рандом</v-btn
-        >
+        <v-btn color="primary" @click="showRandomRecipe" class="mt-2">Рандом</v-btn>
       </v-col>
       <v-col cols="12" md="10">
         <Recipes
@@ -26,6 +24,8 @@
   <RandomRecipeModal
     v-if="showRandomRecipeModal"
     @closeModal="showRandomRecipeModal = false"
+    :recipe="randomRecipe"
+    @getRandomRecipe="getRandomRecipe"
   />
 </template>
 
@@ -52,10 +52,20 @@ export default defineComponent({
   data: () => ({
     showAddModal: false,
     showRandomRecipeModal: false,
+    randomRecipe: undefined,
   }),
   methods: {
     getRecipes() {
       this.$store.dispatch(ActionTypes.GET_RECIPES);
+    },
+    getRandomRecipe() {
+      this.$store.dispatch(ActionTypes.GET_RANDOM_RECIPE).then((recipe) => {
+        this.randomRecipe = recipe;
+      });
+    },
+    showRandomRecipe() {
+      this.showRandomRecipeModal = true;
+      this.getRandomRecipe();
     },
     addRecipe(recipe: RecipeRequestModel) {
       console.log('recipe', recipe);

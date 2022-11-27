@@ -8,7 +8,7 @@
       >
         <div class="modal" @click.stop>
           <div class="modal-title">{{ title }}</div>
-          <div class="px-5 py-8">
+          <div class="px-5 pt-6 pb-8">
             <slot></slot>
           </div>
         </div>
