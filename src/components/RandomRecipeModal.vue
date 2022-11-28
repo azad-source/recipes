@@ -2,7 +2,7 @@
   <Modal title="Случайный рецепт" @closeModal="$emit('closeModal')">
     <v-item-group class="text-left">
       <div class="font-weight-bold text-center text-h5 mb-4">{{ recipe?.name }}</div>
-      <div>Время приготовления: {{ recipe?.preparingTime }}</div>
+      <div>Время приготовления: {{ recipe?.preparingTime }} мин.</div>
       <div class="mb-5">Кол-во порций: {{ recipe?.servingsNumber }}</div>
       <table class="table">
         <thead>
